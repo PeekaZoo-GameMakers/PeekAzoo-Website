@@ -1,0 +1,535 @@
+/* Peek-A-Zoo website — premium scroll narrative layered on the felt design system */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 110px; }
+body {
+  background: var(--pz-bg);
+  background-image: var(--pz-bg-texture);
+  background-size: var(--pz-bg-texture-size);
+  color: var(--pz-text);
+  font-family: var(--pz-font-body);
+  font-weight: var(--pz-fw-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+
+/* Container */
+.pz-container { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 720px) { .pz-container { padding: 0 20px; } }
+
+/* Sticky nav */
+.pz-nav {
+  position: fixed; left: 18px; right: 18px; top: 16px; z-index: 50;
+  border-radius: 999px;
+  transition: box-shadow var(--pz-dur-base) var(--pz-ease), transform var(--pz-dur-base) var(--pz-ease);
+}
+.pz-nav-shell {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 10px 8px 22px; gap: 18px;
+  border-radius: 999px;
+  background-color: #FFF8F0;
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0) 50%),
+    linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.06) 100%),
+    url("../assets/felt-texture.png");
+  background-size: auto, auto, 320px auto;
+  background-blend-mode: overlay, normal, multiply;
+  box-shadow: 0 14px 30px rgba(61,44,30,0.14), 0 4px 8px rgba(61,44,30,0.06);
+  border: 1.5px solid rgba(160, 120, 80, 0.22);
+}
+.pz-nav-shell::after {
+  content: ""; position: absolute; inset: 6px; border-radius: 999px;
+  border: 2px dashed rgba(160, 120, 80, 0.32); pointer-events: none;
+}
+.pz-nav-logo { display: flex; align-items: center; gap: 12px; height: 44px; position: relative; z-index: 2; }
+.pz-nav-logo img { height: 36px; width: auto; }
+.pz-nav-links {
+  display: flex; align-items: center; gap: 6px; position: relative; z-index: 2;
+}
+.pz-nav-links a {
+  font-family: var(--pz-font-display); font-weight: 700; font-size: 14.5px;
+  color: var(--pz-text); opacity: 0.78;
+  padding: 8px 14px; border-radius: 999px;
+  transition: opacity var(--pz-dur-fast) var(--pz-ease), background var(--pz-dur-fast) var(--pz-ease);
+  white-space: nowrap;
+}
+.pz-nav-links a:hover { opacity: 1; background: rgba(160, 120, 80, 0.10); }
+.pz-nav-cta { position: relative; z-index: 2; }
+
+@media (max-width: 1240px) {
+  .pz-nav-links a { padding: 8px 10px; font-size: 14px; }
+}
+@media (max-width: 1040px) {
+  .pz-nav-links { display: none; }
+  .pz-nav-shell { padding-left: 18px; }
+}
+
+/* Mobile menu button */
+.pz-nav-mobile {
+  display: none; position: relative; z-index: 2;
+  width: 44px; height: 44px; border-radius: 999px; border: none;
+  background-color: var(--pz-gold);
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 45%),
+    url("../assets/felt-texture.png");
+  background-size: auto, 320px auto;
+  background-blend-mode: overlay, multiply;
+  cursor: pointer; color: #fff;
+  box-shadow: 0 4px 0 var(--pz-gold-dark);
+}
+.pz-nav-mobile::after {
+  content: ""; position: absolute; inset: 5px; border-radius: 999px;
+  border: 2px dashed rgba(255,255,255,0.65); pointer-events: none;
+}
+@media (max-width: 1040px) { .pz-nav-mobile { display: grid; place-items: center; } .pz-nav-cta { display: none; } }
+
+/* Mobile sheet */
+.pz-mobile-sheet {
+  position: fixed; top: 84px; left: 18px; right: 18px;
+  z-index: 49; padding: 16px;
+  background: var(--pz-surface);
+  border-radius: 24px;
+  border: 1.5px solid var(--pz-border);
+  box-shadow: 0 22px 50px rgba(61,44,30,0.18);
+  display: none;
+}
+.pz-mobile-sheet.is-open { display: block; }
+.pz-mobile-sheet a {
+  display: block; padding: 12px 16px; border-radius: 14px;
+  font-family: var(--pz-font-display); font-weight: 700; font-size: 16px;
+  color: var(--pz-text);
+}
+.pz-mobile-sheet a:hover { background: var(--pz-bg); }
+
+/* Sections */
+.pz-section { padding: 120px 0; position: relative; }
+.pz-section.tight { padding: 90px 0; }
+.pz-section.cream-deep { background: #FCF1DD; }
+.pz-section.warm-white { background: var(--pz-surface); }
+@media (max-width: 720px) {
+  .pz-section { padding: 80px 0; }
+}
+
+/* Eyebrow label */
+.pz-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--pz-font-body); font-weight: 800; font-size: 12px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--pz-text-secondary);
+  padding: 8px 16px; border-radius: 999px;
+  background: var(--pz-surface);
+  border: 1.5px dashed rgba(160, 120, 80, 0.32);
+}
+.pz-eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pz-gold); }
+
+/* Display headlines */
+.pz-headline {
+  font-family: var(--pz-font-display);
+  font-weight: 800;
+  font-size: clamp(40px, 5.4vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  color: var(--pz-text);
+  margin: 0;
+  text-wrap: balance;
+}
+.pz-headline em { font-style: normal; color: var(--pz-pink-dark); }
+.pz-headline .accent-blue { color: var(--pz-blue-dark); }
+.pz-headline .accent-gold { color: var(--pz-gold-dark); }
+.pz-headline .accent-green { color: var(--pz-green-dark); }
+
+.pz-subhead {
+  font-family: var(--pz-font-display);
+  font-weight: 600;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.35;
+  color: var(--pz-text-secondary);
+  margin: 18px 0 0 0;
+  max-width: 640px;
+  text-wrap: balance;
+}
+
+.pz-body-lg {
+  font-size: 18px; line-height: 1.65;
+  color: var(--pz-text); opacity: 0.85;
+  max-width: 560px;
+  text-wrap: pretty;
+}
+
+.pz-section-title {
+  font-family: var(--pz-font-display);
+  font-weight: 800;
+  font-size: clamp(34px, 4.2vw, 56px);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  margin: 16px 0 0 0;
+  text-wrap: balance;
+  max-width: 18ch;
+}
+.pz-section-title.wide { max-width: 22ch; }
+
+/* Centered section intro — eyebrow + title + body stack */
+.pz-section-intro--center {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+.pz-section-intro--center .pz-section-title,
+.pz-section-intro--center .pz-body-lg { margin-left: auto; margin-right: auto; }
+.pz-section-intro--center .pz-body-lg { max-width: 680px; }
+
+/* ============================================================
+   REVEAL — directional, scaled, blurred variants
+   ============================================================ */
+.pz-reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 800ms var(--pz-ease),
+    transform 900ms var(--pz-bounce),
+    filter 700ms var(--pz-ease);
+  will-change: opacity, transform;
+}
+
+/* Directional variants — declared BEFORE is-in so .is-in's transform:none wins. */
+.pz-reveal.from-left  { transform: translateX(-56px); }
+.pz-reveal.from-right { transform: translateX(56px); }
+.pz-reveal.from-down  { transform: translateY(-32px); }
+.pz-reveal.scale-in   { transform: scale(0.86) translateY(28px); }
+.pz-reveal.blur-in    { filter: blur(10px); transform: translateY(20px); }
+.pz-reveal.pop-in     { transform: scale(0.6) rotate(-8deg); }
+
+/* Active state — must come AFTER all directional variants so it wins the cascade. */
+.pz-reveal.is-in,
+.pz-reveal.from-left.is-in,
+.pz-reveal.from-right.is-in,
+.pz-reveal.from-down.is-in,
+.pz-reveal.scale-in.is-in,
+.pz-reveal.blur-in.is-in,
+.pz-reveal.pop-in.is-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Stagger delays */
+.pz-reveal.d1 { transition-delay: 90ms; }
+.pz-reveal.d2 { transition-delay: 180ms; }
+.pz-reveal.d3 { transition-delay: 270ms; }
+.pz-reveal.d4 { transition-delay: 360ms; }
+.pz-reveal.d5 { transition-delay: 450ms; }
+.pz-reveal.d6 { transition-delay: 540ms; }
+
+/* Stagger children container — apply to a parent to auto-stagger its `.pz-reveal` kids */
+.pz-stagger > .pz-reveal:nth-child(1)  { transition-delay: 60ms; }
+.pz-stagger > .pz-reveal:nth-child(2)  { transition-delay: 140ms; }
+.pz-stagger > .pz-reveal:nth-child(3)  { transition-delay: 220ms; }
+.pz-stagger > .pz-reveal:nth-child(4)  { transition-delay: 300ms; }
+.pz-stagger > .pz-reveal:nth-child(5)  { transition-delay: 380ms; }
+.pz-stagger > .pz-reveal:nth-child(6)  { transition-delay: 460ms; }
+.pz-stagger > .pz-reveal:nth-child(7)  { transition-delay: 540ms; }
+.pz-stagger > .pz-reveal:nth-child(8)  { transition-delay: 620ms; }
+
+/* ============================================================
+   AMBIENT ANIMATIONS — floats, pulses, blinks, sparkles
+   ============================================================ */
+@keyframes pz-float-a { 0%,100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-14px) rotate(-3deg); } }
+@keyframes pz-float-b { 0%,100% { transform: translateY(0) rotate(8deg); } 50% { transform: translateY(-10px) rotate(4deg); } }
+@keyframes pz-float-c { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-18px) rotate(2deg); } }
+@keyframes pz-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+@keyframes pz-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Subtle breathing — apply to characters for "alive" feeling */
+@keyframes pz-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.025); }
+}
+
+/* Marching-ants stitch — animates the dashed border position */
+@keyframes pz-stitch-march {
+  to { background-position: 24px 0, -24px 0, 0 24px, 0 -24px; }
+}
+
+/* Sparkle burst — used on CTA hover */
+@keyframes pz-sparkle-burst {
+  0%   { opacity: 0; transform: scale(0.2) rotate(0deg); }
+  50%  { opacity: 1; transform: scale(1.1) rotate(180deg); }
+  100% { opacity: 0; transform: scale(0.6) rotate(360deg); }
+}
+
+/* Wobble — gentle side-to-side, used for hover-call-attention */
+@keyframes pz-wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-2deg); }
+  75%      { transform: rotate(2deg); }
+}
+
+/* Bounce-in — for elements that stamp onto the page */
+@keyframes pz-bounce-in {
+  0%   { opacity: 0; transform: scale(0.4) translateY(40px); }
+  60%  { opacity: 1; transform: scale(1.1) translateY(-6px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Logo pop on page load */
+@keyframes pz-logo-pop {
+  0%   { opacity: 0; transform: scale(0.7) translateY(-8px); }
+  60%  { opacity: 1; transform: scale(1.08) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Slide-down for the whole nav on initial load */
+@keyframes pz-nav-drop {
+  from { opacity: 0; transform: translateY(-110%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Eye blink — applied to a pseudo-element overlay on characters */
+@keyframes pz-blink {
+  0%, 92%, 100% { transform: scaleY(0); }
+  95%, 98%      { transform: scaleY(1); }
+}
+
+/* Subtle parallax drift */
+@keyframes pz-drift {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(8px, -10px); }
+}
+
+/* Scroll cue bobbing arrow */
+@keyframes pz-scroll-cue {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50%      { transform: translateY(8px); opacity: 1; }
+}
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+   ============================================================ */
+.pz-scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 4px;
+  width: 0%;
+  z-index: 100;
+  background: linear-gradient(90deg, var(--pz-gold) 0%, var(--pz-pink) 50%, var(--pz-lilac) 100%);
+  box-shadow: 0 1px 6px rgba(196, 123, 10, 0.45);
+  border-radius: 0 4px 4px 0;
+  transition: width 80ms linear;
+  pointer-events: none;
+}
+
+/* ============================================================
+   NAV — scrolled state (shrink + tighter shadow)
+   ============================================================ */
+.pz-nav { animation: pz-nav-drop 700ms var(--pz-bounce) 100ms backwards; }
+.pz-nav.is-scrolled .pz-nav-shell {
+  padding-top: 6px; padding-bottom: 6px;
+  box-shadow: 0 18px 36px rgba(61,44,30,0.16), 0 6px 12px rgba(61,44,30,0.08);
+  transform: scale(0.97);
+}
+.pz-nav-shell { transition: transform 320ms var(--pz-bounce), box-shadow 320ms var(--pz-ease), padding 320ms var(--pz-ease); }
+.pz-nav-logo img { animation: pz-logo-pop 800ms var(--pz-bounce) 200ms backwards; transition: transform 240ms var(--pz-bounce); }
+.pz-nav-logo:hover img { transform: scale(1.08) rotate(-4deg); }
+
+/* Active section link */
+.pz-nav-links a {
+  position: relative;
+}
+.pz-nav-links a.is-active {
+  opacity: 1;
+  background: rgba(245, 166, 35, 0.16);
+  color: var(--pz-gold-dark);
+}
+.pz-nav-links a.is-active::after {
+  content: "";
+  position: absolute;
+  left: 14px; right: 14px; bottom: 2px;
+  height: 3px; border-radius: 999px;
+  background: var(--pz-gold);
+}
+
+/* ============================================================
+   TILT — 3D hover effect (apply .pz-tilt to a card)
+   The JS in felt.jsx sets --rx and --ry on the element.
+   ============================================================ */
+.pz-tilt {
+  transform-style: preserve-3d;
+  transition: transform 300ms var(--pz-bounce), box-shadow 300ms var(--pz-ease);
+  will-change: transform;
+}
+.pz-tilt.is-tilting {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+}
+
+/* Stitched dashed border that "marches" on hover — apply .pz-stitch-march to a stitched container */
+.pz-stitch-march:hover .pz-stitch-layer,
+.pz-stitch-march.is-tilting .pz-stitch-layer {
+  animation: pz-stitch-march 2.4s linear infinite;
+}
+
+/* ============================================================
+   HOVER LIFT — generic wiggle / scale (for stat cards, problem cards)
+   ============================================================ */
+.pz-lift {
+  transition: transform 320ms var(--pz-bounce), box-shadow 320ms var(--pz-ease);
+  will-change: transform;
+}
+.pz-lift:hover {
+  transform: translateY(-6px) rotate(-0.6deg);
+  box-shadow: 0 22px 46px rgba(61, 44, 30, 0.14), 0 6px 12px rgba(61, 44, 30, 0.08);
+}
+
+/* ============================================================
+   SCROLL CUE — hero bottom arrow
+   ============================================================ */
+.pz-scroll-cue {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--pz-font-body);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pz-text-secondary);
+  z-index: 4;
+  pointer-events: none;
+  animation: pz-scroll-cue 2.4s ease-in-out infinite;
+}
+
+/* ============================================================
+   PAGE LOAD — body fade
+   ============================================================ */
+body { animation: pz-body-fade 600ms ease-out both; }
+@keyframes pz-body-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Stat counter card */
+.pz-stat-card {
+  background: var(--pz-surface);
+  border-radius: var(--pz-radius-xl);
+  padding: 32px 28px;
+  box-shadow: var(--pz-shadow-card);
+  border: 1.5px solid var(--pz-border);
+  position: relative; overflow: hidden;
+  transition: transform 320ms var(--pz-bounce), box-shadow 320ms var(--pz-ease);
+  will-change: transform;
+}
+.pz-stat-card:hover {
+  transform: translateY(-8px) rotate(-0.8deg);
+  box-shadow: 0 26px 50px rgba(61, 44, 30, 0.16), 0 8px 14px rgba(61, 44, 30, 0.08);
+}
+.pz-stat-card:hover .pz-stat-value {
+  transform: scale(1.04);
+}
+.pz-stat-value { transition: transform 320ms var(--pz-bounce); display: inline-block; }
+.pz-stat-value {
+  font-family: var(--pz-font-display); font-weight: 800;
+  font-size: clamp(40px, 4.5vw, 60px); line-height: 1; letter-spacing: -0.02em;
+  background: linear-gradient(180deg, var(--pz-text) 0%, #6B4830 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.pz-stat-label {
+  margin-top: 10px; font-family: var(--pz-font-body); font-weight: 700;
+  font-size: 15px; color: var(--pz-text-secondary); line-height: 1.45;
+}
+
+/* Footer */
+.pz-footer {
+  background: #2A1F14;
+  color: #E8D5C0;
+  padding: 90px 0 50px;
+  position: relative;
+  overflow: hidden;
+}
+.pz-footer h4 { font-family: var(--pz-font-display); font-weight: 700; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #B89A75; margin: 0 0 18px; }
+.pz-footer a { display: block; padding: 6px 0; color: #F0E0CC; font-weight: 600; opacity: 0.85; }
+.pz-footer a:hover { opacity: 1; color: var(--pz-gold); }
+
+/* utility */
+.felt-bg-mini {
+  background-image: var(--pz-felt-bg);
+  background-size: 240px auto;
+  background-blend-mode: multiply;
+}
+
+/* ============================================================
+   RESPONSIVE — comprehensive breakpoints
+   Breakpoints: 1240 (large desktop), 1080 (laptop), 980 (tablet
+   landscape / hero stack), 720 (tablet portrait), 560 (phone)
+   ============================================================ */
+
+@media (max-width: 1080px) {
+  .pz-section { padding: 96px 0; }
+  .pz-headline { font-size: clamp(36px, 6vw, 60px); }
+  .pz-section-title { font-size: clamp(30px, 5vw, 48px); }
+}
+
+@media (max-width: 980px) {
+  /* Nav: tighter on tablet */
+  .pz-nav { left: 12px; right: 12px; top: 12px; }
+  .pz-nav-shell { padding: 6px 8px 6px 16px; gap: 10px; }
+  .pz-nav-logo img { height: 32px; }
+  .pz-mobile-sheet { top: 76px; left: 12px; right: 12px; }
+}
+
+@media (max-width: 720px) {
+  /* Section rhythm tightened on phones */
+  .pz-section { padding: 72px 0; }
+  .pz-container { padding: 0 18px; }
+
+  /* Hero spacing — nav is smaller so first content sits higher */
+  .pz-headline { font-size: clamp(34px, 9vw, 48px); line-height: 1.08; }
+  .pz-subhead  { font-size: clamp(17px, 4.6vw, 21px); }
+  .pz-body-lg  { font-size: 16px; }
+
+  /* Section titles a touch smaller */
+  .pz-section-title { font-size: clamp(26px, 7vw, 38px); max-width: none; }
+  .pz-section-title.wide { max-width: none; }
+
+  /* Eyebrow pill */
+  .pz-eyebrow { font-size: 11px; padding: 7px 14px; }
+
+  /* Footer */
+  .pz-footer { padding: 64px 0 36px; }
+}
+
+@media (max-width: 560px) {
+  .pz-section { padding: 60px 0; }
+  .pz-container { padding: 0 16px; }
+
+  /* Tighter nav pill on phones */
+  .pz-nav { left: 10px; right: 10px; top: 10px; }
+  .pz-nav-shell { padding: 6px 6px 6px 14px; }
+  .pz-nav-logo img { height: 28px; }
+  .pz-nav-mobile { width: 40px; height: 40px; }
+  .pz-mobile-sheet { top: 68px; left: 10px; right: 10px; padding: 12px; }
+
+  /* Smaller stat-card padding so the value still reads */
+  .pz-stat-card { padding: 24px 20px; }
+  .pz-stat-value { font-size: clamp(36px, 11vw, 48px); }
+
+  /* Body line-length */
+  body { font-size: 16px; }
+}
+
+/* Prefer-reduced-motion respect: kill ambient float/pulse */
+@media (prefers-reduced-motion: reduce) {
+  .pz-reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

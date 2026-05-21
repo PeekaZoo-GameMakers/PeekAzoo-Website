@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Peek-A-Zoo · Foundational learning for the years that matter most</title>
+  <link rel="icon" href="assets/logo.png" />
+  <link rel="stylesheet" href="standalone/styles/tokens.css" />
+  <link rel="stylesheet" href="standalone/styles/site.css" />
+
+  <!-- Bundler thumbnail / splash + no-JS fallback. Shown briefly while assets unpack. -->
+  <template id="__bundler_thumbnail" data-bg-color="#FFF8F0">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Peek-A-Zoo">
+      <defs>
+        <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FFD27A"/>
+          <stop offset="100%" stop-color="#F5A623"/>
+        </radialGradient>
+      </defs>
+      <!-- soft cream backdrop -->
+      <rect width="200" height="200" fill="#FFF8F0"/>
+      <!-- felt sun disk -->
+      <circle cx="100" cy="100" r="64" fill="url(#sun)"/>
+      <!-- dashed stitch border -->
+      <circle cx="100" cy="100" r="58" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="6 5" opacity="0.7"/>
+      <!-- two little eyes peeking -->
+      <circle cx="86" cy="96" r="6" fill="#3D2C1E"/>
+      <circle cx="114" cy="96" r="6" fill="#3D2C1E"/>
+      <circle cx="88" cy="94" r="1.6" fill="#fff"/>
+      <circle cx="116" cy="94" r="1.6" fill="#fff"/>
+      <!-- happy smile -->
+      <path d="M84 112 Q100 124 116 112" fill="none" stroke="#3D2C1E" stroke-width="3" stroke-linecap="round"/>
+      <!-- ear-like felt blobs -->
+      <circle cx="46" cy="70" r="10" fill="#6CC14E"/>
+      <circle cx="154" cy="60" r="9" fill="#5BB8E8"/>
+      <circle cx="44" cy="140" r="9" fill="#B68CE8"/>
+      <circle cx="156" cy="142" r="10" fill="#F47B5A"/>
+    </svg>
+  </template>
+
+  <!-- ── External-resource manifest. The bundler inlines each file below as a
+       blob URL keyed by data-resource-id; window.__resources[id] resolves at
+       runtime. The __a() helper at the bottom of this <head> reads that map. -->
+  <meta name="ext-resource-dependency" content="assets/felt-texture.png" data-resource-id="assets/felt-texture.png" />
+  <meta name="ext-resource-dependency" content="assets/logo.png" data-resource-id="assets/logo.png" />
+  <meta name="ext-resource-dependency" content="assets/character-mimi.png" data-resource-id="assets/character-mimi.png" />
+  <meta name="ext-resource-dependency" content="assets/character-lobo.png" data-resource-id="assets/character-lobo.png" />
+  <meta name="ext-resource-dependency" content="assets/character-ullu.png" data-resource-id="assets/character-ullu.png" />
+  <meta name="ext-resource-dependency" content="assets/character-panda.png" data-resource-id="assets/character-panda.png" />
+  <meta name="ext-resource-dependency" content="assets/character-golu.png" data-resource-id="assets/character-golu.png" />
+  <meta name="ext-resource-dependency" content="assets/icon-number-one.webp" data-resource-id="assets/icon-number-one.webp" />
+  <meta name="ext-resource-dependency" content="assets/icon-number-three.webp" data-resource-id="assets/icon-number-three.webp" />
+  <meta name="ext-resource-dependency" content="assets/icon-rhyme.webp" data-resource-id="assets/icon-rhyme.webp" />
+  <meta name="ext-resource-dependency" content="assets/icon-story.webp" data-resource-id="assets/icon-story.webp" />
+  <meta name="ext-resource-dependency" content="assets/icon-tracing-one.webp" data-resource-id="assets/icon-tracing-one.webp" />
+  <meta name="ext-resource-dependency" content="assets/icon-tracing-two.webp" data-resource-id="assets/icon-tracing-two.webp" />
+  <meta name="ext-resource-dependency" content="assets/icon-tracing-three.webp" data-resource-id="assets/icon-tracing-three.webp" />
+  <meta name="ext-resource-dependency" content="assets/icon-locked.webp" data-resource-id="assets/icon-locked.webp" />
+  <meta name="ext-resource-dependency" content="assets/challenge-illustration.png" data-resource-id="assets/challenge-illustration.png" />
+  <meta name="ext-resource-dependency" content="assets/solutions-illustration.png" data-resource-id="assets/solutions-illustration.png" />
+  <meta name="ext-resource-dependency" content="assets/jharkhand-1.png" data-resource-id="assets/jharkhand-1.png" />
+  <meta name="ext-resource-dependency" content="assets/jharkhand-2.png" data-resource-id="assets/jharkhand-2.png" />
+  <meta name="ext-resource-dependency" content="assets/jharkhand-3.jpg" data-resource-id="assets/jharkhand-3.jpg" />
+
+  <!-- Asset resolver. Looks up an asset path on window.__resources and falls
+       back to the literal path if no entry exists (so the bundled HTML keeps
+       working in unbundled dev mode too). -->
+  <script>
+    window.__a = function (path) {
+      var r = window.__resources;
+      return (r && r[path]) || path;
+    };
+  </script>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <main id="app"></main>
+
+  <script type="text/babel" src="standalone/components/felt.jsx"></script>
+  <script type="text/babel" src="standalone/components/demo-form.jsx"></script>
+  <script type="text/babel" src="standalone/components/partner-form.jsx"></script>
+  <script type="text/babel" src="standalone/sections/nav.jsx"></script>
+  <script type="text/babel" src="standalone/sections/hero.jsx"></script>
+  <script type="text/babel" src="standalone/sections/challenge.jsx"></script>
+  <script type="text/babel" src="standalone/sections/solutions.jsx"></script>
+  <script type="text/babel" src="standalone/sections/platform.jsx"></script>
+  <script type="text/babel" src="standalone/sections/impact.jsx"></script>
+  <script type="text/babel" src="standalone/sections/safety.jsx"></script>
+  <script type="text/babel" src="standalone/sections/world.jsx"></script>
+  <script type="text/babel" src="standalone/sections/contact.jsx"></script>
+
+  <script type="text/babel" data-presets="react">
+    function App() {
+      return (
+        <React.Fragment>
+          <Nav />
+          <Hero />
+          <Challenge />
+          <Solutions />
+          <Platform />
+          <Impact />
+          <Safety />
+          <World />
+          <Contact />
+          <Footer />
+          <DemoForm />
+          <PartnerForm />
+        </React.Fragment>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById('app')).render(<App />);
+  </script>
+</body>
+</html>

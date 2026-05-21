@@ -1,0 +1,204 @@
+/* ============================================================
+   Peek-A-Zoo · Foundation Tokens
+   Colors, typography, spacing, radii, shadows, and felt motifs.
+   Import this file at the top of any prototype that uses the
+   Peek-A-Zoo design language.
+   ============================================================ */
+
+/* Webfonts — sourced from Google Fonts.
+   Baloo 2    — display + headings + button text (English & Hindi, per production spec)
+   Nunito     — body + captions
+   Noto Sans  — Telugu, Gujarati, Bengali, Kannada script fallbacks
+   Anek Odia  — Odia script
+
+   The display font stack cascades through scripts by Unicode coverage,
+   so most text just works regardless of script. Use the .pz-lang-* helpers below to
+   force a specific font when needed. */
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&family=Noto+Sans:wght@400;600;700&family=Anek+Odia:wght@400;500;700&display=swap");
+
+:root {
+  /* ---------- Brand Colors (felt swatches) ---------- */
+  --pz-green:        #6CC14E;  /* Leaf Green   — primary, numbers */
+  --pz-green-light:  #A8DC70;  /* Lime Green   — soft backgrounds */
+  --pz-green-dark:   #4A8F35;  /* button shadow / pressed state  */
+  --pz-green-tint:   #EBF8E8;  /* completed badge bg              */
+
+  --pz-blue:         #5BB8E8;  /* Sky Blue     — counting, animals */
+  --pz-blue-dark:    #2E90C8;
+  --pz-blue-tint:    #F0F4FF;
+
+  --pz-gold:         #F5A623;  /* Honey Gold   — primary CTA, stars */
+  --pz-gold-dark:    #C47B0A;
+  --pz-gold-tint:    #FFF6E0;
+
+  --pz-pink:         #F47B5A;  /* Coral   — stories            */
+  --pz-pink-dark:    #C04030;
+  --pz-pink-tint:    #FFEDE6;
+
+  --pz-lilac:        #B68CE8;  /* Lilac        — rhymes, creative   */
+  --pz-lilac-dark:   #8A5CC8;
+  --pz-lilac-tint:   #F4ECFF;
+
+  --pz-coral:        #F47B5A;  /* Coral        — adventure, alerts  */
+  --pz-coral-dark:   #C04030;
+
+  --pz-gray:         #B0B8C0;  /* Felt Gray    — locked, disabled   */
+  --pz-gray-dark:    #8090A0;
+  --pz-gray-tint:    #F5F5F5;
+
+  /* ---------- Canvas + Surface ---------- */
+  --pz-bg:           #FFF8F0;  /* Cream — app background           */
+  --pz-surface:      #FFFDF8;  /* Warm White — cards               */
+  --pz-border:       #F0E0CC;  /* warm divider                     */
+  --pz-table:        #E8D5C0;  /* "felt table" surface in scenes    */
+
+  /* ---------- Text ---------- */
+  --pz-text:           #3D2C1E;  /* Deep Brown — primary text       */
+  --pz-text-secondary: #A07850;  /* Warm Tan   — captions, meta    */
+  --pz-text-on-color:  #FFFFFF;  /* always white on color tiles    */
+  --pz-text-on-color-soft: rgba(255, 255, 255, 0.82);
+
+  /* ---------- Type ----------
+     Display & body stacks list scripts in coverage order — the browser picks
+     the first family that has a glyph for each character, so Baloo 2 handles
+     Latin (and Devanagari via fallback), Noto Sans handles Telugu/Gujarati/
+     Bengali/Kannada, Anek Odia handles Odia. */
+  --pz-font-display: "Baloo 2", "Anek Odia", "Noto Sans", "Comic Sans MS", system-ui, sans-serif;
+  --pz-font-body:    "Nunito", "Anek Odia", "Noto Sans", system-ui, -apple-system, sans-serif;
+
+  /* Type scale (sizes / line-heights / weights) */
+  --pz-fs-display: 32px;  --pz-lh-display: 1.1;
+  --pz-fs-h1:      24px;  --pz-lh-h1:      1.2;
+  --pz-fs-h2:      18px;  --pz-lh-h2:      1.3;
+  --pz-fs-h3:      15px;  --pz-lh-h3:      1.4;
+  --pz-fs-body:    15px;  --pz-lh-body:    1.6;
+  --pz-fs-small:   13px;  --pz-lh-small:   1.5;
+  --pz-fs-caption: 11px;  --pz-lh-caption: 1.4;
+
+  --pz-fw-display: 900;
+  --pz-fw-heading: 800;
+  --pz-fw-sub:     700;
+  --pz-fw-body:    600;
+  --pz-fw-button:  700;
+
+  /* ---------- Spacing ---------- */
+  --pz-space-xs:  4px;
+  --pz-space-sm:  8px;
+  --pz-space-md:  16px;
+  --pz-space-lg:  24px;
+  --pz-space-xl:  32px;
+  --pz-space-2xl: 48px;
+
+  /* ---------- Border Radius ---------- */
+  --pz-radius-sm:    8px;   /* badges, tags                 */
+  --pz-radius-md:    12px;  /* buttons, small cards         */
+  --pz-radius-lg:    18px;  /* icon tiles, activity cards   */
+  --pz-radius-xl:    24px;  /* lesson cards, panels         */
+  --pz-radius-pill:  999px; /* pill CTAs, progress, badges  */
+  --pz-radius-round: 50%;   /* avatars                      */
+
+  /* ---------- Shadows (puffy felt-press) ---------- */
+  /* hard, solid, no blur. Each maps to its base color. */
+  --pz-shadow-gold:  0 4px 0 #C47B0A;
+  --pz-shadow-green: 0 4px 0 #4A8F35;
+  --pz-shadow-blue:  0 4px 0 #2E90C8;
+  --pz-shadow-pink:  0 4px 0 #C04030;
+  --pz-shadow-lilac: 0 4px 0 #8A5CC8;
+  --pz-shadow-coral: 0 4px 0 #C04030;
+  --pz-shadow-gray:  0 4px 0 #8090A0;
+
+  /* Card lift — soft warm drop, not a hard offset. */
+  --pz-shadow-card:  0 6px 18px rgba(61, 44, 30, 0.10),
+                     0 2px 4px  rgba(61, 44, 30, 0.06);
+
+  /* ---------- Felt Texture Overlay ---------- */
+  /* The canonical felt-fabric image used across every brand surface.
+     Resolved relative to this CSS file (project root), so `var(--pz-felt-bg)`
+     works in any HTML that imports this file. */
+  --pz-felt-bg:       url("../../assets/felt-texture.png");
+  --pz-felt-bg-size:  320px auto;
+  --pz-felt-bg-blend: multiply;
+
+  /* Subtle vertical tint that re-saturates the brand color after the
+     felt image has been multiplied over it. */
+  --pz-felt-tint: linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 45%),
+                  linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.10) 100%);
+
+  /* Legacy dot-grid texture — kept for backwards compat but no longer the
+     default. Use --pz-felt-bg for new surfaces. */
+  --pz-felt-texture:
+    radial-gradient(circle at 1.5px 1.5px, rgba(255,255,255,0.18) 1px, transparent 0);
+  --pz-felt-texture-size: 14px 14px;
+
+  /* App background dot pattern (subtler than on color) */
+  --pz-bg-texture:
+    radial-gradient(circle at 1.5px 1.5px, rgba(160, 120, 80, 0.10) 1px, transparent 0);
+  --pz-bg-texture-size: 16px 16px;
+
+  /* ---------- Motion ---------- */
+  --pz-ease:        cubic-bezier(0.4, 0, 0.2, 1);    /* material  */
+  --pz-bounce:      cubic-bezier(0.34, 1.56, 0.64, 1); /* spring  */
+  --pz-snap:        cubic-bezier(0.4, 0, 1, 1);      /* fast snap */
+  --pz-dur-fast:    120ms;
+  --pz-dur-base:    180ms;
+  --pz-dur-medium:  300ms;
+  --pz-dur-slow:    600ms;
+}
+
+/* ============================================================
+   Semantic primitives — drop these classes on plain elements
+   instead of writing per-component rules from scratch.
+   ============================================================ */
+
+.pz-body {
+  background: var(--pz-bg);
+  background-image: var(--pz-bg-texture);
+  background-size: var(--pz-bg-texture-size);
+  color: var(--pz-text);
+  font-family: var(--pz-font-body);
+  font-weight: var(--pz-fw-body);
+  font-size: var(--pz-fs-body);
+  line-height: var(--pz-lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Type scale */
+.pz-display { font-family: var(--pz-font-display); font-weight: var(--pz-fw-display); font-size: var(--pz-fs-display); line-height: var(--pz-lh-display); letter-spacing: -0.01em; }
+.pz-h1      { font-family: var(--pz-font-display); font-weight: var(--pz-fw-heading); font-size: var(--pz-fs-h1);      line-height: var(--pz-lh-h1); }
+.pz-h2      { font-family: var(--pz-font-display); font-weight: var(--pz-fw-sub);     font-size: var(--pz-fs-h2);      line-height: var(--pz-lh-h2); }
+.pz-h3      { font-family: var(--pz-font-display); font-weight: var(--pz-fw-sub);     font-size: var(--pz-fs-h3);      line-height: var(--pz-lh-h3); }
+.pz-text    { font-family: var(--pz-font-body);    font-weight: var(--pz-fw-body);    font-size: var(--pz-fs-body);    line-height: var(--pz-lh-body); }
+.pz-small   { font-family: var(--pz-font-body);    font-weight: var(--pz-fw-sub);     font-size: var(--pz-fs-small);   line-height: var(--pz-lh-small); }
+.pz-caption { font-family: var(--pz-font-body);    font-weight: var(--pz-fw-sub);     font-size: var(--pz-fs-caption); line-height: var(--pz-lh-caption); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* ============================================================
+   Language helpers — force a specific font for content in a
+   given script. Apply on the element wrapping the localized text.
+   ============================================================ */
+.pz-lang-en, .pz-lang-hi { font-family: "Baloo 2", system-ui, sans-serif; }
+.pz-lang-te, .pz-lang-gu, .pz-lang-bn, .pz-lang-kn { font-family: "Noto Sans", system-ui, sans-serif; }
+.pz-lang-od { font-family: "Anek Odia", system-ui, sans-serif; }
+
+/* ============================================================
+   Felt signature: dashed-stitch inset border.
+   Apply via .pz-stitch on any positioned element with a radius.
+   The stitch radius automatically subtracts a few px to look
+   correctly inset. Change the stitch color by overriding
+   --pz-stitch-color (defaults to soft white for color tiles).
+   ============================================================ */
+.pz-stitch { position: relative; }
+.pz-stitch::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: inherit;
+  border: 2px dashed var(--pz-stitch-color, rgba(255, 255, 255, 0.55));
+  pointer-events: none;
+}
+
+/* Felt-texture overlay — apply alongside any solid color background. */
+.pz-felt {
+  background-image: var(--pz-felt-texture);
+  background-size: var(--pz-felt-texture-size);
+}
