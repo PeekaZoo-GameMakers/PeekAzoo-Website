@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy · Peek-A-Zoo</title>
+  <link rel="icon" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #FFF8F0;
+      --surface: #FFFCF7;
+      --border:  #E8D5C0;
+      --text:    #3D2C1E;
+      --soft:    #7A6350;
+      --gold:    #F5A623;
+      --goldDk:  #C6821A;
+      --green:   #6CC14E;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    .pz-nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,248,240,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid var(--border);
+      padding: 0 32px;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .pz-nav img { height: 36px; }
+    .pz-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 14px;
+      color: var(--goldDk); text-decoration: none;
+      padding: 8px 18px; border-radius: 999px;
+      border: 1.5px solid var(--goldDk);
+      transition: background 160ms ease;
+    }
+    .pz-back:hover { background: #FFF3DC; }
+    .pz-back svg { flex-shrink: 0; }
+
+    /* ── Hero band ── */
+    .pz-hero {
+      background: linear-gradient(135deg, #3D2C1E 0%, #5A3E2B 100%);
+      padding: 72px 32px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .pz-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("assets/felt-texture.png");
+      background-size: 320px auto;
+      opacity: 0.12; mix-blend-mode: screen;
+    }
+    .pz-hero-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+    .pz-eyebrow {
+      display: inline-block;
+      font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 11px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 16px;
+    }
+    .pz-hero h1 {
+      font-family: 'Baloo 2', sans-serif; font-weight: 800;
+      font-size: clamp(28px, 4vw, 42px); line-height: 1.15;
+      color: #fff; text-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    }
+    .pz-hero p {
+      margin-top: 14px;
+      font-size: 15px; color: #C8B49A; font-weight: 600;
+    }
+
+    /* ── Content ── */
+    .pz-content {
+      max-width: 780px; margin: 0 auto;
+      padding: 64px 32px 96px;
+    }
+
+    /* Section headings */
+    .pz-content h2 {
+      font-family: 'Baloo 2', sans-serif; font-weight: 800;
+      font-size: 22px; color: var(--text);
+      margin: 52px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+    .pz-content h2:first-child { margin-top: 0; }
+
+    .pz-content h3 {
+      font-family: 'Baloo 2', sans-serif; font-weight: 800;
+      font-size: 16px; color: var(--text);
+      margin: 28px 0 8px;
+    }
+
+    .pz-content p {
+      margin-bottom: 16px;
+      color: var(--text); font-weight: 600;
+    }
+
+    .pz-content ul {
+      margin: 8px 0 18px 20px;
+    }
+    .pz-content ul li {
+      margin-bottom: 6px; font-weight: 600;
+      color: var(--text);
+    }
+    .pz-content ul li::marker { color: var(--gold); }
+
+    .pz-content a {
+      color: var(--goldDk); font-weight: 700;
+      text-decoration: underline; text-underline-offset: 2px;
+    }
+
+    .pz-contact-box {
+      margin-top: 40px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 32px;
+    }
+    .pz-contact-box p { margin: 0; }
+
+    /* ── Footer strip ── */
+    .pz-foot {
+      border-top: 1.5px solid var(--border);
+      padding: 24px 32px;
+      text-align: center;
+      font-size: 13px; font-weight: 700;
+      color: #9A856E;
+    }
+    .pz-foot a { color: var(--goldDk); text-decoration: none; margin: 0 8px; }
+    .pz-foot a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .pz-nav { padding: 0 18px; }
+      .pz-hero { padding: 52px 20px 44px; }
+      .pz-content { padding: 44px 20px 72px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="pz-nav">
+    <a href="/"><img src="assets/logo.png" alt="Peek-A-Zoo"></a>
+    <a href="/" class="pz-back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M5 12l6-6M5 12l6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to site
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="pz-hero">
+    <div class="pz-hero-inner">
+      <div class="pz-eyebrow">Legal · OAKS Solution Private Limited</div>
+      <h1>Privacy Policy</h1>
+      <p>Effective Date: 22 May 2026 &nbsp;·&nbsp; Last Updated: 22 May 2026</p>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <main class="pz-content">
+
+    <p>This Privacy Policy explains how <strong>OAKS Solution Private Limited</strong> ("OAKS," "PeekAZoo," "we," "our," or "us") handles information when you use the PeekAZoo mobile application, website, and related educational services (collectively, the "Services").</p>
+    <p>PeekAZoo is an educational platform designed for children aged approximately 3–8 years, along with parents, teachers, and educational institutions.</p>
+    <p><strong>Contact:</strong> <a href="mailto:contact@peekazoo.fun">contact@peekazoo.fun</a></p>
+
+    <h2>1. Who We Are</h2>
+    <p><strong>Company:</strong> OAKS Solution Private Limited<br>
+    <strong>Product:</strong> PeekAZoo<br>
+    <strong>Availability:</strong> Worldwide</p>
+    <p>PeekAZoo provides educational learning experiences including interactive activities, augmented reality (AR) experiences, worksheets, and learning progress tools.</p>
+
+    <h2>2. Scope</h2>
+    <p>This Privacy Policy applies to:</p>
+    <ul>
+      <li>parents or guardians using PeekAZoo</li>
+      <li>teachers using PeekAZoo</li>
+      <li>schools or educational institutions using PeekAZoo</li>
+      <li>children accessing PeekAZoo through adult-managed or institution-managed access</li>
+      <li>visitors to our website</li>
+    </ul>
+    <p>Because PeekAZoo is intended for children, we apply additional privacy protections.</p>
+
+    <h2>3. Information We Collect</h2>
+    <p>PeekAZoo is designed to minimize data collection.</p>
+
+    <h3>3.1 Adult Account Information</h3>
+    <p>When a parent, teacher, or school administrator creates an account, we may collect:</p>
+    <ul>
+      <li>name</li>
+      <li>email address</li>
+      <li>login credentials</li>
+      <li>account role (parent / teacher / administrator)</li>
+      <li>organization or school name (if applicable)</li>
+    </ul>
+    <p>This information is used to manage access and provide support.</p>
+
+    <h3>3.2 Child Profile Information</h3>
+    <p>To support educational use, we may collect limited child profile information such as:</p>
+    <ul>
+      <li>nickname or display name</li>
+      <li>age or age band</li>
+      <li>assigned learning level</li>
+      <li>educational progress information</li>
+    </ul>
+    <p>PeekAZoo does not require a child's full legal name for standard use.</p>
+
+    <h3>3.3 Learning Progress Data</h3>
+    <p>To provide educational functionality, we may record:</p>
+    <ul>
+      <li>activities completed</li>
+      <li>lesson progress</li>
+      <li>worksheet completion status</li>
+      <li>learning milestones</li>
+      <li>progress metrics</li>
+    </ul>
+    <p>For school deployments, this information may be visible to authorized teachers or administrators.</p>
+
+    <h3>3.4 Camera Access and Worksheet Processing</h3>
+    <p>PeekAZoo may request camera access only for educational functionality such as:</p>
+    <ul>
+      <li>augmented reality activities</li>
+      <li>QR code recognition</li>
+      <li>worksheet recognition</li>
+    </ul>
+    <p>Worksheet image capture is limited to supported educational workflows. We do not allow unrestricted image uploads by children. Unless required for the requested educational function, captured images are not retained by us.</p>
+
+    <h3>3.5 Technical Information</h3>
+    <p>Limited technical information may be processed for service reliability and security, such as:</p>
+    <ul>
+      <li>device type</li>
+      <li>operating system</li>
+      <li>app version</li>
+      <li>basic diagnostic or error information</li>
+      <li>session security information</li>
+    </ul>
+    <p>We do not collect unnecessary device information.</p>
+
+    <h2>4. Information We Generally Do Not Collect</h2>
+    <p>As part of normal operation, PeekAZoo generally does not collect:</p>
+    <ul>
+      <li>precise location data</li>
+      <li>contact lists or address books</li>
+      <li>child social media information</li>
+      <li>government identification information from children</li>
+      <li>public social networking content from children</li>
+      <li>unrestricted child-generated uploads</li>
+      <li>behavioral advertising data</li>
+      <li>advertising profiles</li>
+      <li>unrelated sensitive personal information</li>
+    </ul>
+
+    <h2>5. How We Use Information</h2>
+    <p>We use information only to operate and improve PeekAZoo, including to:</p>
+    <ul>
+      <li>create and manage accounts</li>
+      <li>authenticate users</li>
+      <li>provide educational content</li>
+      <li>enable AR educational experiences</li>
+      <li>process worksheet recognition features</li>
+      <li>track learning progress</li>
+      <li>provide teacher or school reporting where applicable</li>
+      <li>maintain service reliability and security</li>
+      <li>respond to support requests</li>
+      <li>comply with legal obligations</li>
+    </ul>
+    <p>We do not use child data for targeted advertising.</p>
+
+    <h2>6. Children's Privacy</h2>
+    <p>Protecting children's privacy is a core design principle of PeekAZoo. Our approach includes:</p>
+    <ul>
+      <li>collecting minimal child information</li>
+      <li>using nicknames instead of full names where practical</li>
+      <li>limiting child data to educational functionality</li>
+      <li>requiring adult-managed or institution-managed access</li>
+      <li>restricting uploads and interactions</li>
+      <li>not selling children's personal information</li>
+      <li>not serving behavioral advertising to children</li>
+    </ul>
+    <p>Parents, teachers, and institutions are responsible for supervising child access where applicable.</p>
+
+    <h2>7. School and Institutional Use</h2>
+    <p>If PeekAZoo is used through a school or educational institution:</p>
+    <ul>
+      <li>schools may manage access for authorized users</li>
+      <li>teachers may view student learning progress</li>
+      <li>institutions may receive educational progress reporting</li>
+    </ul>
+    <p>Separate institutional agreements may apply where relevant.</p>
+
+    <h2>8. Sharing of Information</h2>
+    <p>We do not sell personal information. We may share limited information only when necessary with service providers that help operate PeekAZoo, such as:</p>
+    <ul>
+      <li>hosting providers</li>
+      <li>infrastructure providers</li>
+      <li>security providers</li>
+      <li>technical support providers</li>
+    </ul>
+    <p>These providers may process information only to support our services.</p>
+
+    <h2>9. Hosting and Storage</h2>
+    <p>PeekAZoo may use secure cloud infrastructure, including <strong>Amazon Web Services (AWS)</strong>. Because PeekAZoo is available internationally, information may be processed outside a user's country of residence. Reasonable safeguards are used where applicable.</p>
+
+    <h2>10. Data Retention</h2>
+    <p>We retain information only for as long as reasonably necessary to:</p>
+    <ul>
+      <li>provide services</li>
+      <li>maintain educational functionality</li>
+      <li>support school reporting where applicable</li>
+      <li>resolve technical or legal issues</li>
+      <li>comply with legal obligations</li>
+    </ul>
+    <p>When no longer required, data may be deleted or anonymized.</p>
+
+    <h2>11. Security</h2>
+    <p>We use reasonable safeguards to protect information, including measures such as:</p>
+    <ul>
+      <li>encrypted data transmission where appropriate</li>
+      <li>controlled access permissions</li>
+      <li>secure hosting practices</li>
+      <li>system monitoring for reliability and protection</li>
+    </ul>
+    <p>No digital platform can guarantee absolute security.</p>
+
+    <h2>12. User Rights and Data Requests</h2>
+    <p>Authorized adults may request, subject to applicable law:</p>
+    <ul>
+      <li>access to account information</li>
+      <li>correction of inaccurate information</li>
+      <li>deletion of eligible data</li>
+      <li>withdrawal of consent where applicable</li>
+    </ul>
+    <p>Requests can be sent to: <a href="mailto:contact@peekazoo.fun">contact@peekazoo.fun</a>. We may verify identity before processing requests.</p>
+
+    <h2>13. Account and Data Deletion</h2>
+    <p>To request deletion of an account or associated information, email <a href="mailto:contact@peekazoo.fun">contact@peekazoo.fun</a> with:</p>
+    <ul>
+      <li>registered email address</li>
+      <li>account type</li>
+      <li>institution name (if applicable)</li>
+      <li>child profile nickname (if applicable)</li>
+    </ul>
+    <p>We will process verified requests in accordance with applicable legal requirements.</p>
+
+    <h2>14. Website Technologies</h2>
+    <p>If you access PeekAZoo through our website, limited technical tools such as session cookies or security-related technologies may be used for functionality and protection.</p>
+
+    <h2>15. Third-Party Links</h2>
+    <p>Our website or services may contain links to third-party resources. We are not responsible for their privacy practices.</p>
+
+    <h2>16. Legal Compliance</h2>
+    <p>PeekAZoo is designed with consideration for applicable privacy and child protection requirements, including relevant obligations under:</p>
+    <ul>
+      <li>child privacy laws where applicable</li>
+      <li>data protection laws where applicable</li>
+      <li>app store platform privacy requirements</li>
+    </ul>
+
+    <h2>17. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Updated versions will be posted on our website or services with a revised effective date.</p>
+
+    <h2>18. Contact Us</h2>
+    <div class="pz-contact-box">
+      <p><strong>OAKS Solution Private Limited</strong><br>
+      PeekAZoo Privacy Team<br>
+      Email: <a href="mailto:contact@peekazoo.fun">contact@peekazoo.fun</a></p>
+    </div>
+
+  </main>
+
+  <!-- Footer strip -->
+  <footer class="pz-foot">
+    © 2026 Peek-A-Zoo · OAKS Solution Private Limited &nbsp;·&nbsp;
+    <a href="/">Home</a>
+    <a href="/privacy.html">Privacy Policy</a>
+  </footer>
+
+</body>
+</html>

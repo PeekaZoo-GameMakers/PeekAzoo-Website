@@ -172,7 +172,7 @@ function Footer() {
             © 2026 Peek-A-Zoo · Built with care for foundational learners
           </div>
           <div style={{ display: 'flex', gap: 18, fontFamily: 'Nunito, sans-serif', fontWeight: 700, fontSize: 13 }}>
-            <a href="#">Privacy</a>
+            <a href="/privacy.html">Privacy</a>
             <a href="#">Terms</a>
             <a href="#">Security</a>
           </div>
