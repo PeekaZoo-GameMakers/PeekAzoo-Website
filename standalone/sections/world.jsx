@@ -4,7 +4,7 @@ function World() {
   const characters = [
     {
       id: 'mimi',
-      name: 'Mimi',
+      name: 'Piko',
       tagline: 'The fearless explorer',
       species: 'Rabbit · she/her',
       img: __a('assets/character-mimi.png'),
@@ -80,7 +80,7 @@ function World() {
           <Reveal delay={2}>
             <p className="pz-body-lg" style={{ marginTop: 24, fontSize: 19 }}>
               Every great learning journey needs brave explorers, clever friends, wise guides, and gentle companions.
-              Children join Munnu and Mimi as they explore, solve, ask, and grow with confidence.
+              Children join Munnu and Piko as they explore, solve, ask, and grow with confidence.
             </p>
           </Reveal>
         </div>
