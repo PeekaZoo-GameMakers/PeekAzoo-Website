@@ -8,7 +8,7 @@ function Nav() {
     ['Platform', '#platform'],
     ['Impact', '#impact'],
     ['Safety & Trust', '#safety'],
-    ['The Peek-A-Zoo World', '#world'],
+    ['The PeekAZoo World', '#world'],
     ['Contact', '#contact'],
   ];
   const [open, setOpen] = React.useState(false);
