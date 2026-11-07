@@ -1,0 +1,787 @@
+/* ==========================================================================
+   immersive.css — the PeekAZoo Trail
+   A motion + guidance layer over the existing layout. Adds nothing to the
+   page's content: every rule here styles navigation chrome, progress state
+   or animation. All colour comes from the tokens already defined in
+   brand.css (--ink, --cream, --green, --sky, --yellow, --coral, --lilac,
+   --edge) so the theme never drifts.
+
+   Structure
+     1.  Tokens and base state
+     2.  Focal-point choreography (the anti-dump rule)
+     3.  Headline / content entrance
+     4.  Parallax layers
+     5.  Chapter rail (desktop guidance spine)
+     6.  Mobile chapter bar
+     7.  Scroll progress + hero cue
+     8.  Play Pass HUD (gamification)
+     9.  Chapter-complete toast + next-step card
+     10. Micro-interactions (magnetic, tilt, character pop, counters)
+     11. Cursor companion
+     12. Sparkles / confetti
+     13. Reduced motion + print
+   ========================================================================== */
+
+:root {
+  --pz-ease: cubic-bezier(.22, 1, .36, 1);
+  --pz-ease-soft: cubic-bezier(.33, 1, .68, 1);
+  --pz-rail-w: 13rem;
+  --pz-dim: .4;
+  --pz-shadow-soft: 0 .75rem 2rem -.8rem rgba(61, 44, 30, .3);
+  --pz-shadow-lift: 0 1.4rem 2.6rem -1rem rgba(61, 44, 30, .36);
+}
+
+/* The layer only engages once JS has confirmed it can run. Without it the
+   original static site renders exactly as before. */
+html.pz-on {
+  scroll-behavior: auto;
+}
+
+/* Lenis owns the scroll position while it is running. */
+html.lenis-smooth {
+  scroll-behavior: auto;
+}
+html.lenis-smooth body {
+  min-height: 100%;
+}
+html.lenis-stopped body {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   1. Focal-point choreography
+   Only the section nearest the viewport centre reads at full strength. The
+   rest step back rather than disappear, so the page always has one clear
+   place to look without feeling broken or empty.
+   ========================================================================== */
+
+.pz-on.pz-focus main > section,
+.pz-on.pz-focus main > aside {
+  transition: opacity .55s var(--pz-ease-soft), filter .55s var(--pz-ease-soft);
+  will-change: opacity;
+}
+
+.pz-on.pz-focus main > section:not(.pz-focused):not(.pz-never-dim),
+.pz-on.pz-focus main > aside:not(.pz-focused):not(.pz-never-dim) {
+  opacity: var(--pz-dim);
+  filter: saturate(.62);
+}
+
+/* Sections holding video skip the filter: compositing a <video> through a
+   CSS filter forces an expensive repaint on every frame. Opacity alone
+   stays on the GPU and reads the same. */
+.pz-on.pz-focus main > section.pz-has-media:not(.pz-focused) {
+  filter: none;
+}
+
+/* While a section holds focus its decorative field brightens a little, which
+   reads as the scene "waking up" as you arrive. */
+.pz-on main > section .ambient {
+  transition: opacity .7s var(--pz-ease-soft);
+  opacity: .55;
+}
+.pz-on main > section.pz-focused .ambient {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   2. Entrance choreography
+   An explicit read order per section: eyebrow, then heading, then body, then
+   media. This is what stops the page feeling like everything arrives at once.
+   ========================================================================== */
+
+.pz-on [data-pz-enter] {
+  opacity: 0;
+  transform: translate3d(0, 1.6rem, 0);
+  transition:
+    opacity .7s var(--pz-ease) var(--pz-delay, 0s),
+    transform .7s var(--pz-ease) var(--pz-delay, 0s);
+  will-change: opacity, transform;
+}
+.pz-on [data-pz-enter].pz-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Headline words. The splitter preserves <em> and inserts the space that the
+   original <br> markup was missing, so the accessible text reads correctly. */
+/* The word is a clipping box; the span inside it rises out of nothing. The
+   padding/margin pair keeps descenders (g, y, p) from being shaved off. */
+.pz-on .pz-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: .18em;
+  margin-bottom: -.18em;
+}
+.pz-on .pz-word > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 110%, 0) rotate(5deg);
+  transition:
+    opacity .62s var(--pz-ease) var(--pz-delay, 0s),
+    transform .62s var(--pz-ease) var(--pz-delay, 0s);
+  will-change: transform, opacity;
+}
+.pz-on .pz-split.pz-in .pz-word > span {
+  opacity: 1;
+  transform: none;
+}
+
+/* ==========================================================================
+   3. Parallax
+   Depth is opt-in via data-pz-depth. Transforms only — no layout thrash.
+   ========================================================================== */
+
+.pz-on [data-pz-depth] {
+  will-change: transform;
+}
+
+/* The hero media card gets a gentle counter-drift against its copy. */
+.pz-on .pz-parallax-media {
+  will-change: transform;
+}
+
+/* ==========================================================================
+   4. Chapter rail — the guidance spine
+   Fixed to the right edge. Slim by default; labels only appear for the active
+   chapter or on hover, so it guides without competing with the content.
+   ========================================================================== */
+
+.pz-rail {
+  position: fixed;
+  top: 50%;
+  right: clamp(.75rem, 2vw, 1.75rem);
+  transform: translateY(-50%);
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+  gap: .1rem;
+  padding: .85rem .6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--cream) 82%, transparent);
+  border: 1px solid var(--edge);
+  box-shadow: var(--pz-shadow-soft);
+  backdrop-filter: blur(10px) saturate(1.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s var(--pz-ease), transform .5s var(--pz-ease);
+}
+/* Ready = this page has chapters. Show = the journey has actually started.
+   Holding it back over the opening scene keeps the hero uncluttered. */
+.pz-on .pz-rail.pz-rail-ready { display: flex; }
+.pz-on .pz-rail.pz-rail-show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.pz-rail-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .6rem;
+  padding: .32rem .2rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  color: var(--muted);
+}
+
+.pz-rail-dot {
+  position: relative;
+  flex: none;
+  width: .62rem;
+  height: .62rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  transition: transform .4s var(--pz-ease), background .4s var(--pz-ease);
+}
+.pz-rail-item:hover .pz-rail-dot {
+  transform: scale(1.35);
+  background: color-mix(in srgb, var(--sky) 70%, transparent);
+}
+.pz-rail-item[aria-current="true"] .pz-rail-dot {
+  background: var(--yellow);
+  transform: scale(1.5);
+  box-shadow: 0 0 0 .28rem color-mix(in srgb, var(--yellow) 26%, transparent);
+}
+/* A chapter you have already visited keeps a quiet green tick of progress. */
+.pz-rail-item.pz-visited .pz-rail-dot {
+  background: color-mix(in srgb, var(--green) 55%, transparent);
+}
+.pz-rail-item.pz-visited[aria-current="true"] .pz-rail-dot {
+  background: var(--yellow);
+}
+
+.pz-rail-label {
+  white-space: nowrap;
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: .76rem;
+  letter-spacing: .01em;
+  color: var(--ink);
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateX(.4rem);
+  transition:
+    max-width .45s var(--pz-ease),
+    opacity .35s var(--pz-ease),
+    transform .45s var(--pz-ease);
+}
+/* Labels appear on hover, on keyboard focus, and for a couple of seconds
+   when the chapter changes ("peek"). They then collapse back to dots so the
+   rail stops competing with the content it is pointing at. */
+.pz-rail:hover .pz-rail-label,
+.pz-rail-item:focus-visible .pz-rail-label,
+.pz-rail.pz-rail-peek .pz-rail-item[aria-current="true"] .pz-rail-label {
+  max-width: var(--pz-rail-w);
+  opacity: 1;
+  transform: none;
+}
+.pz-rail-item:focus-visible {
+  outline: 2px solid var(--sky);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+@media (min-width: 1100px) {
+  .pz-on .pz-rail.pz-rail-ready { display: flex; }
+}
+@media (max-width: 1099px) {
+  .pz-on .pz-rail.pz-rail-ready { display: none; }
+}
+
+/* ==========================================================================
+   5. Mobile chapter bar
+   The same guidance, reduced to one line: where you are and how far along.
+   ========================================================================== */
+
+.pz-chapterbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  display: none;
+  align-items: center;
+  gap: .6rem;
+  padding: .5rem .9rem calc(.5rem + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in srgb, var(--cream) 92%, transparent);
+  border-top: 1px solid var(--edge);
+  backdrop-filter: blur(10px);
+  transform: translateY(110%);
+  transition: transform .45s var(--pz-ease);
+}
+.pz-on .pz-chapterbar.pz-rail-ready {
+  display: flex;
+}
+.pz-on .pz-chapterbar.pz-bar-show {
+  transform: none;
+}
+.pz-chapterbar-index {
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: .78rem;
+  color: var(--muted);
+  flex: none;
+}
+.pz-chapterbar-name {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: .85rem;
+  color: var(--ink);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pz-chapterbar-track {
+  flex: none;
+  width: 4.5rem;
+  height: .32rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  overflow: hidden;
+}
+.pz-chapterbar-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green), var(--yellow));
+  transition: width .4s var(--pz-ease);
+}
+@media (min-width: 1100px) {
+  .pz-on .pz-chapterbar.pz-rail-ready { display: none; }
+}
+
+/* ==========================================================================
+   6. Scroll progress + hero cue
+   ========================================================================== */
+
+.pz-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  z-index: 120;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--green), var(--yellow), var(--coral));
+  pointer-events: none;
+}
+.pz-on .pz-progress { display: block; }
+
+/* Fixed rather than absolute: pinned inside the hero it collided with the
+   carousel's own labels at the bottom of the scene. */
+.pz-cue {
+  position: fixed;
+  left: 50%;
+  bottom: 1.6rem;
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  transform: translateX(-50%);
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: .72rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity .6s var(--pz-ease);
+  pointer-events: none;
+}
+.pz-on .pz-cue.pz-in { opacity: 1; }
+.pz-on .pz-cue.pz-cue-gone { opacity: 0; }
+.pz-cue-chev {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 25%, transparent);
+  display: grid;
+  place-items: center;
+  animation: pz-bob 1.9s var(--pz-ease-soft) infinite;
+}
+.pz-cue-chev::after {
+  content: '';
+  width: .42rem;
+  height: .42rem;
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: translateY(-1px) rotate(45deg);
+}
+@keyframes pz-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(.3rem); }
+}
+
+/* ==========================================================================
+   7. Play Pass HUD
+   The gamified progress chip. Hidden over the hero so the opening stays
+   clean, then slides in once the journey actually starts.
+   ========================================================================== */
+
+.pz-pass {
+  position: fixed;
+  left: clamp(.75rem, 2vw, 1.5rem);
+  bottom: clamp(.75rem, 2vw, 1.5rem);
+  z-index: 61;
+  display: none;
+  align-items: center;
+  gap: .6rem;
+  padding: .45rem .9rem .45rem .5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--cream) 88%, transparent);
+  border: 1px solid var(--edge);
+  box-shadow: var(--pz-shadow-soft);
+  backdrop-filter: blur(10px) saturate(1.15);
+  opacity: 0;
+  transform: translateY(1rem) scale(.94);
+  transition:
+    opacity .5s var(--pz-ease),
+    transform .5s var(--pz-ease);
+}
+.pz-on .pz-pass.pz-rail-ready { display: flex; }
+.pz-on .pz-pass.pz-pass-show {
+  opacity: 1;
+  transform: none;
+}
+.pz-pass.pz-pass-pop {
+  animation: pz-pass-pop .5s var(--pz-ease);
+}
+@keyframes pz-pass-pop {
+  0%   { transform: scale(1); }
+  38%  { transform: scale(1.09) rotate(-1.5deg); }
+  100% { transform: scale(1); }
+}
+
+.pz-pass-ring {
+  position: relative;
+  flex: none;
+  width: 2.1rem;
+  height: 2.1rem;
+  display: grid;
+  place-items: center;
+}
+.pz-pass-ring svg { transform: rotate(-90deg); display: block; }
+.pz-pass-ring circle { fill: none; stroke-width: 3; stroke-linecap: round; }
+.pz-pass-track { stroke: color-mix(in srgb, var(--ink) 13%, transparent); }
+.pz-pass-bar {
+  stroke: var(--green);
+  transition: stroke-dashoffset .6s var(--pz-ease), stroke .4s var(--pz-ease);
+}
+.pz-pass.pz-complete .pz-pass-bar { stroke: var(--yellow); }
+.pz-pass-count {
+  position: absolute;
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: .62rem;
+  color: var(--ink);
+}
+.pz-pass-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.pz-pass-text b {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: .76rem;
+  font-weight: 900;
+  color: var(--ink);
+}
+.pz-pass-text small {
+  font-size: .64rem;
+  color: var(--muted);
+  letter-spacing: .02em;
+}
+
+/* Collected characters stack up inside the pass on the Console page. */
+.pz-pass-crew {
+  display: flex;
+  align-items: center;
+  margin-left: .1rem;
+}
+.pz-pass-crew:empty { display: none; }
+.pz-pass-crew img {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--blue);
+  border: 2px solid var(--cream);
+  margin-left: -.5rem;
+  opacity: 0;
+  transform: scale(.4) translateY(.4rem);
+  transition: opacity .45s var(--pz-ease), transform .5s var(--pz-ease);
+}
+.pz-pass-crew img:first-child { margin-left: 0; }
+.pz-pass-crew img.pz-got {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 1099px) {
+  /* Sit above the mobile chapter bar instead of colliding with it. */
+  .pz-pass { bottom: calc(3.1rem + env(safe-area-inset-bottom, 0px)); }
+  .pz-pass-text small { display: none; }
+}
+
+/* ==========================================================================
+   8. Chapter-complete toast + next-step hand-off
+   The moment that moves someone from one page to the next.
+   ========================================================================== */
+
+.pz-toast {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(1.25rem, 5vh, 3rem);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  padding: .7rem .8rem .7rem .7rem;
+  border-radius: 999px;
+  background: var(--cream);
+  border: 1px solid var(--edge);
+  box-shadow: var(--pz-shadow-lift);
+  opacity: 0;
+  transform: translate(-50%, 1.5rem) scale(.95);
+  pointer-events: none;
+  transition:
+    opacity .55s var(--pz-ease),
+    transform .55s var(--pz-ease);
+}
+.pz-toast.pz-toast-show {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  pointer-events: auto;
+}
+.pz-toast img {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--blue);
+  flex: none;
+}
+.pz-toast-copy { display: flex; flex-direction: column; line-height: 1.2; }
+.pz-toast-copy b {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: .82rem;
+  color: var(--ink);
+}
+.pz-toast-copy small { font-size: .7rem; color: var(--muted); }
+.pz-toast a {
+  flex: none;
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: .76rem;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 .25rem 0 color-mix(in srgb, var(--ink) 18%, transparent);
+  transition: transform .25s var(--pz-ease), box-shadow .25s var(--pz-ease);
+}
+.pz-toast a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 .4rem 0 color-mix(in srgb, var(--ink) 18%, transparent);
+}
+.pz-toast-close {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 0;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: .8rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+.pz-toast-close:hover { background: color-mix(in srgb, var(--ink) 14%, transparent); }
+
+@media (max-width: 600px) {
+  .pz-toast {
+    left: .6rem;
+    right: .6rem;
+    bottom: calc(3.4rem + env(safe-area-inset-bottom, 0px));
+    transform: translateY(1.5rem) scale(.96);
+  }
+  .pz-toast.pz-toast-show { transform: none; }
+  .pz-toast-copy small { display: none; }
+}
+
+/* ==========================================================================
+   9. Micro-interactions
+   ========================================================================== */
+
+/* Magnetic buttons: JS sets --pz-mx/--pz-my, CSS owns the easing. */
+.pz-on .button,
+.pz-on .text-link,
+.pz-on .round-arrow {
+  transition:
+    transform .45s var(--pz-ease),
+    box-shadow .35s var(--pz-ease),
+    filter .35s var(--pz-ease);
+}
+.pz-on .pz-magnet {
+  transform: translate3d(var(--pz-mx, 0), var(--pz-my, 0), 0) scale(var(--pz-ms, 1));
+}
+.pz-on .pz-magnet.pz-pressing { --pz-ms: .95; transition-duration: .12s; }
+
+/* Cards lift and tilt toward the pointer. */
+.pz-on .pz-tilt {
+  transform-style: preserve-3d;
+  transition: transform .5s var(--pz-ease), box-shadow .5s var(--pz-ease);
+}
+.pz-on .pz-tilt.pz-tilting {
+  transform:
+    perspective(900px)
+    rotateX(var(--pz-rx, 0deg))
+    rotateY(var(--pz-ry, 0deg))
+    translate3d(0, -.3rem, 0);
+  box-shadow: var(--pz-shadow-lift);
+  transition-duration: .18s;
+}
+/* Inner art drifts a little further than the card — cheap depth. */
+.pz-on .pz-tilt img {
+  transition: transform .5s var(--pz-ease);
+}
+.pz-on .pz-tilt.pz-tilting img {
+  transform: translate3d(calc(var(--pz-ry, 0deg) / 1deg * -.18rem), calc(var(--pz-rx, 0deg) / 1deg * .18rem), 0) scale(1.03);
+  transition-duration: .18s;
+}
+
+/* Character art: bounces in, then reacts to hover. */
+.pz-on .pz-char {
+  transition: transform .6s var(--pz-ease), filter .5s var(--pz-ease);
+}
+.pz-on .pz-char.pz-locked {
+  filter: saturate(.25) opacity(.5);
+  transform: scale(.94);
+}
+.pz-on .pz-char.pz-unlocked {
+  animation: pz-char-pop .72s var(--pz-ease);
+}
+@keyframes pz-char-pop {
+  0%   { transform: scale(.82) translateY(.8rem); }
+  45%  { transform: scale(1.07) translateY(-.35rem) rotate(-2.5deg); }
+  70%  { transform: scale(.98) rotate(1.5deg); }
+  100% { transform: none; }
+}
+.pz-on .pz-char:hover {
+  animation: pz-wiggle .7s var(--pz-ease-soft);
+}
+@keyframes pz-wiggle {
+  0%, 100% { transform: rotate(0) scale(1); }
+  25%      { transform: rotate(-4deg) scale(1.05); }
+  60%      { transform: rotate(3deg) scale(1.04); }
+}
+
+/* The "25,000+" reach counter. */
+.pz-on .pz-count { font-variant-numeric: tabular-nums; }
+
+/* FAQ accordion: smooth open instead of a jump. */
+.pz-on details.pz-acc { overflow: hidden; }
+.pz-on details.pz-acc > summary { cursor: pointer; }
+.pz-on .pz-acc-body {
+  overflow: hidden;
+  transition: height .42s var(--pz-ease), opacity .32s var(--pz-ease);
+}
+
+/* Form fields respond as you work through them. */
+.pz-on .enquiry-field input,
+.pz-on .enquiry-field textarea,
+.pz-on .enquiry-field select {
+  transition: border-color .3s var(--pz-ease), box-shadow .3s var(--pz-ease), background .3s var(--pz-ease);
+}
+.pz-on .enquiry-field input:focus,
+.pz-on .enquiry-field textarea:focus {
+  box-shadow: 0 0 0 .28rem color-mix(in srgb, var(--sky) 18%, transparent);
+}
+.pz-on .enquiry-field.pz-filled label {
+  color: var(--green);
+}
+
+/* Media cards get a soft reveal mask as they arrive. */
+.pz-on .pz-media-reveal {
+  clip-path: inset(0 0 0 0 round 1.4rem);
+}
+
+/* ==========================================================================
+   10. Cursor companion (fine pointers only)
+   ========================================================================== */
+
+.pz-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  width: 1.9rem;
+  height: 1.9rem;
+  margin: -.95rem 0 0 -.95rem;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 30%, transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s var(--pz-ease), width .3s var(--pz-ease), height .3s var(--pz-ease),
+              margin .3s var(--pz-ease), background .3s var(--pz-ease), border-color .3s var(--pz-ease);
+  will-change: transform;
+}
+.pz-cursor.pz-cursor-on { opacity: 1; }
+.pz-cursor.pz-cursor-hot {
+  width: 3.1rem;
+  height: 3.1rem;
+  margin: -1.55rem 0 0 -1.55rem;
+  background: color-mix(in srgb, var(--yellow) 22%, transparent);
+  border-color: color-mix(in srgb, var(--yellow) 60%, transparent);
+}
+.pz-cursor.pz-cursor-media {
+  width: 3.6rem;
+  height: 3.6rem;
+  margin: -1.8rem 0 0 -1.8rem;
+  background: color-mix(in srgb, var(--sky) 20%, transparent);
+  border-color: color-mix(in srgb, var(--sky) 55%, transparent);
+}
+@media (hover: none), (pointer: coarse) {
+  .pz-cursor { display: none !important; }
+}
+
+/* ==========================================================================
+   11. Sparkles — the small celebratory burst on an unlock
+   ========================================================================== */
+
+.pz-spark-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+  overflow: hidden;
+}
+.pz-spark {
+  position: absolute;
+  width: .5rem;
+  height: .5rem;
+  border-radius: 50%;
+  will-change: transform, opacity;
+}
+
+/* ==========================================================================
+   12. Reduced motion and print
+   Everything decorative switches off; everything navigational stays.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .pz-on [data-pz-enter],
+  .pz-on .pz-split .pz-word > span,
+  .pz-on .pz-cue {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .pz-on.pz-focus main > section:not(.pz-focused),
+  .pz-on.pz-focus main > aside:not(.pz-focused) {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .pz-on .pz-char,
+  .pz-on .pz-char.pz-locked,
+  .pz-on .pz-char:hover,
+  .pz-on .pz-char.pz-unlocked {
+    animation: none !important;
+    filter: none !important;
+    transform: none !important;
+  }
+  .pz-cue-chev { animation: none !important; }
+  .pz-cursor { display: none !important; }
+  .pz-spark-layer { display: none !important; }
+  .pz-on .pz-tilt.pz-tilting { transform: none !important; }
+  .pz-on .pz-tilt.pz-tilting img { transform: none !important; }
+  .pz-pass, .pz-toast, .pz-rail, .pz-chapterbar { transition: none !important; }
+}
+
+@media print {
+  .pz-rail, .pz-chapterbar, .pz-pass, .pz-toast, .pz-cursor,
+  .pz-progress, .pz-spark-layer, .pz-cue { display: none !important; }
+  .pz-on [data-pz-enter],
+  .pz-on .pz-split .pz-word > span {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .pz-on.pz-focus main > section { opacity: 1 !important; filter: none !important; }
+}

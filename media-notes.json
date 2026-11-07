@@ -1,0 +1,53 @@
+{
+  "oaksOverview": "First 110 seconds only; excludes later AI evaluation/worksheet section. Original preserved.",
+  "newClips": [
+    {
+      "source": "Promotion Videos/PeekAZoo/V3_01_clara.mp4",
+      "name": "console-clara",
+      "start": 12,
+      "seconds": 19
+    },
+    {
+      "source": "Promotion Videos/PeekAZoo/V3_03_redconvent.mp4",
+      "name": "console-pose",
+      "start": 12,
+      "seconds": 19
+    },
+    {
+      "source": "assets/video-web/console-movement-play.mp4",
+      "name": "console-movement",
+      "start": 13,
+      "seconds": 22
+    },
+    {
+      "source": "assets/video-web/console-home-play.mp4",
+      "name": "console-shared",
+      "start": 2,
+      "seconds": 21
+    },
+    {
+      "source": "assets/video-web/oaks-kiosk-demo.mp4",
+      "name": "oaks-kiosk",
+      "start": 12,
+      "seconds": 25
+    },
+    {
+      "source": "assets/video-web/oaks-overview-en.mp4",
+      "name": "oaks-overview",
+      "start": 0,
+      "seconds": 110
+    }
+  ],
+  "homeSlides": {
+    "console": {
+      "file": "media/peekazoo-home-film.mp4",
+      "seconds": 37.802
+    },
+    "oaksKidz": {
+      "file": "media/oaks-overview.mp4",
+      "seconds": 110
+    }
+  },
+  "consoleOpening": "First slide: 14-second at-home Build a Buddy excerpt; cropped to the original child/TV footage (688x454 at x16,y466). Other three movement clips retained.",
+  "practiceStill": "Copy Luma frame at 14 seconds, cropped to its original child/TV footage (688x440 at x16,y466)."
+}

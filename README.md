@@ -1,44 +1,48 @@
-# Peekazoo marketing site
+# PeekAZoo — fresh website build
 
-A static one-page site. No build step, no server code: open `index.html` or upload the folder to any static host.
+Open `index.html` in a browser. This is an independent six-page build; it does not import the old pages, stylesheets or interaction script.
 
-## Local preview
+For HTTP preview, start a static server from this folder and open `http://localhost:8010`. No install or build step is required. Keep the folder’s relative structure intact. Use whichever runtime is available:
 
-Because the page loads its assets over HTTP, open it through a tiny local server rather than double-clicking the file:
+- Node: `npx --yes http-server . -p 8010 -c-1` (`-c-1` disables caching so edits appear on a normal refresh).
+- Python: `python3 -m http.server 8010`.
 
-```sh
-python3 -m http.server 8000
-npx --yes http-server . -p 8000
-# then visit http://localhost:8000
+On Windows, `python3` usually resolves to the Microsoft Store app execution alias rather than a real interpreter, and fails with “Python was not found”. Git Bash inherits the same PATH, so switching shells does not help. Use the Node command, or install Python (`winget install Python.Python.3.12`) and reopen the terminal.
+
+If a server fails to start with `EADDRINUSE`, port 8010 is already taken. A stale server still answers requests, so the browser shows an older copy of the site instead of the current folder. Identify and stop the owner before restarting:
+
+```powershell
+Get-NetTCPConnection -LocalPort 8010 -State Listen
+Get-CimInstance Win32_Process -Filter "ProcessId = <pid>" | Select-Object CommandLine
 ```
 
-## Deploy on GitHub Pages
+## Contents
 
-1. Push this folder to a repository.
-2. Repo **Settings → Pages**.
-3. Source: **Deploy from a branch**, branch `main`, folder `/ (root)`.
-4. Save. The URL appears within a minute or two.
+- `index.html`: two-product video carousel, product routes, shared character world and company introduction.
+- `peekazoo.html`: actual movement play, device, named games, Pebi/Nimu/Mimi/Jiku character introduction, visual setup, shared play, intended skills, privacy, FAQ and registration.
+- `oaks-kidz.html`: learning overview/kiosk, app screenshots, teaching formats, AR, field experience and institutional enquiries.
+- `about.html`, `contact.html`, `privacy.html`: fresh supporting layouts.
+- `site.css`, `brand.css`, `site.js`: independent layout, live-site-inspired warm brand styling, and interactions.
+- `assets/`, `media/`: selected local artwork, optimized videos and posters.
 
-To use a custom domain, add it under Settings → Pages and create a `CNAME` file containing just the domain.
+The Console home slide uses the full `peekazoo-home-film.mp4` (about 38 seconds); the Oaks Kidz slide uses the 110-second `oaks-overview.mp4`, ending before the AI-evaluation chapter. The home carousel cycles automatically and has a pause control. Product carousels advance sequentially and stop at the final clip. Videos start muted in view, pause out of view or in hidden tabs, and respect reduced-motion preferences. Native video controls provide manual playback and sound.
 
-## Signup form
+The Oaks Kidz overview is a new 110-second copy ending before its AI-evaluation chapter. The original media remains unchanged outside this folder. `media-notes.json` records excerpt sources.
 
-Submissions POST to a Google Apps Script web app that appends a row to a Google Sheet. The endpoint lives in `index.html` — search for `sheetEndpoint`. Swap that URL to point at a different sheet.
+Google Fonts and six Google Play-hosted app screenshot images require internet access. The site uses the existing Google Apps Script / Sheet enquiry endpoint and preserves its URL-encoded legacy fields. A no-CORS browser response cannot confirm that a Sheet row was saved; the form says so and offers the support email. No live test enquiry has been submitted.
 
-Name and phone are required; email and pincode are optional.
+## Checks and remaining verification
 
-## Structure
+Passed: HTML structure, one main heading per page, unique IDs, local references/anchors, preserved policy and product facts, with clarified compatibility and purchase FAQs, JavaScript syntax, automatic playback and ordered advancement, final-slide stop, home cycling/pause, global playback exclusivity, reduced-motion behaviour, mobile menu, form field requirements, legacy request format and duplicate-submit prevention.
 
-```
-index.html      the whole page (markup + logic)
-support.js      renderer runtime — required
-image-slot.js   drag-and-drop image placeholder used in the family-time section
-assets/         videos, photos, characters, logo, felt texture
-_ds/            the two design systems' stylesheets and bundles
-```
+The interaction checks used simulated DOM events, not a rendered browser. Desktop/mobile visual inspection remains pending because local browser inspection is blocked in the current tool session. Actual Google Sheet storage remains unverified. Test these before public release.
 
-## Notes
+Console review refinements: opening registration action, cropped at-home first clip, activity photograph in place of the learning bubbles, and explicit follow-up for TV requirements, included items and delivery. Exact hardware requirements, included accessories/game list and availability still require product-owner confirmation.
 
-- The hero plays two muted videos in a crossfading carousel; muted autoplay is what browsers permit without a user gesture.
-- Store links in the footer point at the live Play Store and App Store listings.
-- Photos and hero videos are placeholders from early art passes — replace the files in `assets/` keeping the same names and nothing else needs to change.
+## Live visual language and restored content
+
+`brand.css` applies the live site's warm cream/brown foundation, blue accents, textured surfaces, soft image shapes, rounded labels and golden buttons to the fresh journey. It does not import the old site's code or replace original root pages.
+
+The Console includes a parent-concerns section covering participation, intended practice, local camera handling and offline play. It preserves the disclosure that gameplay usage, diagnostics and device identifiers are shared online, and avoids absolute safety or development promises.
+
+About restores the substantive sections from the saved 4–5 November versions: the company's work, distinct family/institution products, confirmed 25,000+ learner reach in Jharkhand, disciplines behind the products and relevant contact paths. No leadership identities or unverified milestones were invented.
