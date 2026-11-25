@@ -5,28 +5,11 @@ const euroCountries = new Set(['AT','BE','BG','CY','DE','EE','ES','FI','FR','GR'
 const localeRegion = (() => {
   try { return new Intl.Locale(navigator.language).region; } catch { return ''; }
 })();
-const detectedRegion = localeRegion === 'IN' ? 'india' : localeRegion === 'US' ? 'us' : euroCountries.has(localeRegion) ? 'europe' : 'other';
+const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const detectedRegion = timezone === 'Asia/Kolkata' || timezone === 'Asia/Calcutta' || localeRegion === 'IN' ? 'india' : localeRegion === 'US' ? 'us' : euroCountries.has(localeRegion) ? 'europe' : 'other';
 const regionPriceNodes = document.querySelectorAll('[data-region-price]');
 if (regionPriceNodes.length) {
-  const selector = document.createElement('select');
-  selector.className = 'price-region-select';
-  selector.setAttribute('aria-label', 'Select pricing region');
-  Object.entries({ india: 'India', europe: 'Euro area', us: 'United States', other: 'Other regions' }).forEach(([value, label]) => {
-    selector.add(new Option(label, value));
-  });
-  const updatePrices = region => {
-    regionPriceNodes.forEach(node => { node.textContent = regionPrices[region]; });
-    selector.value = region;
-  };
-  let savedRegion;
-  try { savedRegion = localStorage.getItem('pricing-region'); } catch {}
-  updatePrices(regionPrices[savedRegion] ? savedRegion : detectedRegion);
-  selector.addEventListener('change', () => {
-    updatePrices(selector.value);
-    try { localStorage.setItem('pricing-region', selector.value); } catch {}
-  });
-  const anchor = document.querySelector('.intro-price, .about-product-grid article strong');
-  anchor?.insertAdjacentElement('afterend', selector);
+  regionPriceNodes.forEach(node => { node.textContent = regionPrices[detectedRegion]; });
 }
 
 const motionReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
