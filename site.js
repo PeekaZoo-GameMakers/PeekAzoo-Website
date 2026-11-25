@@ -1,5 +1,34 @@
 'use strict';
 
+const regionPrices = { india: '₹14,999', europe: '€197', us: '$217', other: '$217' };
+const euroCountries = new Set(['AT','BE','BG','CY','DE','EE','ES','FI','FR','GR','HR','IE','IT','LT','LU','LV','MT','NL','PT','SI','SK']);
+const localeRegion = (() => {
+  try { return new Intl.Locale(navigator.language).region; } catch { return ''; }
+})();
+const detectedRegion = localeRegion === 'IN' ? 'india' : localeRegion === 'US' ? 'us' : euroCountries.has(localeRegion) ? 'europe' : 'other';
+const regionPriceNodes = document.querySelectorAll('[data-region-price]');
+if (regionPriceNodes.length) {
+  const selector = document.createElement('select');
+  selector.className = 'price-region-select';
+  selector.setAttribute('aria-label', 'Select pricing region');
+  Object.entries({ india: 'India', europe: 'Euro area', us: 'United States', other: 'Other regions' }).forEach(([value, label]) => {
+    selector.add(new Option(label, value));
+  });
+  const updatePrices = region => {
+    regionPriceNodes.forEach(node => { node.textContent = regionPrices[region]; });
+    selector.value = region;
+  };
+  let savedRegion;
+  try { savedRegion = localStorage.getItem('pricing-region'); } catch {}
+  updatePrices(regionPrices[savedRegion] ? savedRegion : detectedRegion);
+  selector.addEventListener('change', () => {
+    updatePrices(selector.value);
+    try { localStorage.setItem('pricing-region', selector.value); } catch {}
+  });
+  const anchor = document.querySelector('.intro-price, .about-product-grid article strong');
+  anchor?.insertAdjacentElement('afterend', selector);
+}
+
 const motionReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const menuButton = document.querySelector('.menu-toggle');
 const mobileMenu = document.getElementById('mobile-menu');
@@ -244,6 +273,7 @@ if (form) {
     status.textContent = '';
     try {
       await fetch('https://script.google.com/macros/s/AKfycbw-CLSrFJ5EPZHXFmsdXts6ik8oY67Zlnb9EDwkYjpA4Xb3K9YlzEWYjyjqLuXTMDFt/exec', { method:'POST',mode:'no-cors',body:payload });
+      form.reset();
       status.textContent = 'Your enquiry was sent. This page cannot confirm it was saved. For confirmation, email contact@peekazoo.fun.';
     } catch {
       status.textContent = 'We could not send your enquiry. Please email contact@peekazoo.fun.';
