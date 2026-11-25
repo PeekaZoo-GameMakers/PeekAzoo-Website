@@ -109,6 +109,7 @@ em{color:var(--sky)}
 .about-product-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
 .about-product-grid article{display:flex;flex-direction:column;align-items:flex-start;background:#e8f3fa;border:1px solid #d9e4e4;border-radius:32px;padding:35px;box-shadow:0 7px 0 #9b784010}
 .about-product-grid article:nth-child(2){background:#fff3db;border-color:#e9dec8}
+.price-region-select{display:block;max-width:100%;margin:10px 0 20px;padding:8px 12px;border:1px solid currentColor;border-radius:10px;background:#fff;color:var(--ink);font:700 .85rem 'Nunito',sans-serif}
 .about-product-grid h3{font-size:2.4rem;margin:5px 0 20px}
 .about-product-grid p{font-size:1rem;color:var(--muted);margin-bottom:24px}
 .about-product-grid strong,.about-product-note{font-size:.88rem;font-weight:900;margin-bottom:20px}
